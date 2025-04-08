@@ -37,11 +37,13 @@ function convertMarkdownToHtml(markdown) {
 }
 
 async function convertHtmlToPdf(html, outputPath) {
+  const { executablePath } = require("puppeteer");
   const browser = await puppeteer.launch({
-    executablePath: "/usr/bin/google-chrome",
+    executablePath: executablePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
     headless: "new",
   });
+
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: "networkidle0" });
   await page.pdf({
